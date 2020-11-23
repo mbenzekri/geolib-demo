@@ -68,7 +68,11 @@ module.exports = {
     },
 
     resolve: {
-        extensions: ['.tsx', '.ts', '.js']
+        extensions: ['.tsx', '.ts', '.js'],
+        fallback: {
+            buffer: false,
+            string_decoder: false
+        }
     },
     optimization: {
         minimizer: [new TerserPlugin()],
