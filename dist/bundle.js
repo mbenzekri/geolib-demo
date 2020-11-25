@@ -49099,21 +49099,35 @@ return RBush;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var geolib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! geolib */ "../geolib/dist/index.js");
-/* harmony import */ var ol__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ol */ "./node_modules/ol/Map.js");
-/* harmony import */ var ol__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ol */ "./node_modules/ol/View.js");
-/* harmony import */ var ol_layer__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ol/layer */ "./node_modules/ol/layer/Vector.js");
-/* harmony import */ var ol_layer__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ol/layer */ "./node_modules/ol/layer/Tile.js");
-/* harmony import */ var ol_source__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ol/source */ "./node_modules/ol/source/Vector.js");
-/* harmony import */ var ol_source__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ol/source */ "./node_modules/ol/source/OSM.js");
-/* harmony import */ var ol_proj__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ol/proj */ "./node_modules/ol/proj.js");
-/* harmony import */ var ol_extent__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ol/extent */ "./node_modules/ol/extent.js");
-/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Style.js");
-/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Circle.js");
-/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Fill.js");
-/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Stroke.js");
-/* harmony import */ var ol_format__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ol/format */ "./node_modules/ol/format/GeoJSON.js");
-/* harmony import */ var ol_control__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ol/control */ "./node_modules/ol/control/ScaleLine.js");
+/* harmony import */ var geolib_dist__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! geolib/dist */ "../geolib/dist/index.js");
+/* harmony import */ var _mvc__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./mvc */ "./src/mvc.ts");
+/* harmony import */ var ol__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ol */ "./node_modules/ol/Map.js");
+/* harmony import */ var ol__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ol */ "./node_modules/ol/View.js");
+/* harmony import */ var ol_layer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ol/layer */ "./node_modules/ol/layer/Vector.js");
+/* harmony import */ var ol_layer__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ol/layer */ "./node_modules/ol/layer/Tile.js");
+/* harmony import */ var ol_source__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ol/source */ "./node_modules/ol/source/Vector.js");
+/* harmony import */ var ol_source__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ol/source */ "./node_modules/ol/source/OSM.js");
+/* harmony import */ var ol_proj__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ol/proj */ "./node_modules/ol/proj.js");
+/* harmony import */ var ol_extent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ol/extent */ "./node_modules/ol/extent.js");
+/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Style.js");
+/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Circle.js");
+/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Fill.js");
+/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Stroke.js");
+/* harmony import */ var ol_format__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ol/format */ "./node_modules/ol/format/GeoJSON.js");
+/* harmony import */ var ol_control__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ol/control */ "./node_modules/ol/control/ScaleLine.js");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 
 
 
@@ -49123,147 +49137,276 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var dropArea = document.getElementById('drop-area');
-['dragenter', 'dragover', 'dragleave', 'drop'].forEach(function (eventName) {
-    dropArea.addEventListener(eventName, preventDefaults, false);
-});
-function preventDefaults(e) {
-    e.preventDefault();
-    e.stopPropagation();
+
+function blink(elem, millisec) {
+    elem.classList.add('blink');
+    setTimeout(function () { return elem.classList.remove('blink'); }, millisec);
 }
-;
-['dragenter', 'dragover'].forEach(function (eventName) {
-    dropArea.addEventListener(eventName, highlight, false);
-});
-['dragleave', 'drop'].forEach(function (eventName) {
-    dropArea.addEventListener(eventName, unhighlight, false);
-});
-function highlight() {
-    dropArea.classList.add('highlight');
-}
-function unhighlight() {
-    dropArea.classList.remove('highlight');
-}
-dropArea.addEventListener('drop', handleDrop, false);
-function handleDrop(e) {
-    var droppedfiles = e.dataTransfer.files;
-    var files = [];
-    for (var i = 0; i < droppedfiles.length; i++)
-        files.push(droppedfiles.item(i));
-    var litems = files.map(function (file) { return "<li>file \"" + file.name + "\" dropped is " + file.size + " bytes</li>"; });
-    var ul = document.getElementById('filelist');
-    ul.innerHTML = litems.join('');
-    handleFiles(files);
-}
-var start = Date.now();
-function onprogress(p) {
-    if (p.count === 0) {
-        start = Date.now();
+var MVCDropzone = (function (_super) {
+    __extends(MVCDropzone, _super);
+    function MVCDropzone() {
+        var _this = _super.call(this, 'dropzone') || this;
+        _this.model = {};
+        _this.build();
+        return _this;
     }
-    var pelem = document.getElementById('progress');
-    var percent = Math.floor(100 * p.read / p.size);
-    pelem.innerHTML = "loaded " + p.count + " features for " + percent + "% of file [bytes:" + p.read + " size:" + p.size + "]<br/> throughput =" + Math.floor((p.count * 1000) / (Date.now() - start)) + " o/s";
-}
-function handleFiles(files) {
-    var geofile = null;
-    for (var _i = 0, files_1 = files; _i < files_1.length; _i++) {
-        var file = files_1[_i];
-        var ext = file.name.replace(/^.*\./, '');
-        switch (ext) {
-            case 'shp':
-                var dbf = files.find(function (f) { return f.name.endsWith('.dbf'); });
-                geofile = dbf ? new geolib__WEBPACK_IMPORTED_MODULE_0__.Shapefile(file.name, file, dbf) : new geolib__WEBPACK_IMPORTED_MODULE_0__.Shapefile(file.name, file);
-                break;
-            case 'geojson':
-                geofile = new geolib__WEBPACK_IMPORTED_MODULE_0__.Geojson(file.name, file);
-                break;
-            case 'csv':
-                geofile = new geolib__WEBPACK_IMPORTED_MODULE_0__.Csv(file.name, file, { header: true, lonlat: ['lon', 'lat'], separator: ';' });
-                break;
-        }
-        if (geofile)
-            break;
-    }
-    if (geofile) {
-        var data_1 = document.getElementById('data');
-        geofile.buildIndexes([], onprogress).then(function (_) {
-            data_1.innerHTML = "Loaded " + geofile.count + " feature from " + geofile.name;
-            addToMap(geofile, map, 0, 10000, null);
-        }).catch(function (e) {
-            data_1.innerHTML = "Load error for " + geofile.name + " : " + e.stack;
-        });
-    }
-}
-var defstyle = [
-    new ol_style__WEBPACK_IMPORTED_MODULE_2__.default({
-        image: new ol_style__WEBPACK_IMPORTED_MODULE_3__.default({
-            fill: new ol_style__WEBPACK_IMPORTED_MODULE_4__.default({
-                color: 'rgba(255,255,255,0.4)'
-            }),
-            stroke: new ol_style__WEBPACK_IMPORTED_MODULE_5__.default({
-                color: '#3399CC',
-                width: 1.25
-            }),
-            radius: 5
-        }),
-        fill: new ol_style__WEBPACK_IMPORTED_MODULE_4__.default({
-            color: 'rgba(255,255,255,0.4)'
-        }),
-        stroke: new ol_style__WEBPACK_IMPORTED_MODULE_5__.default({
+    MVCDropzone.prototype.build = function () {
+        _super.prototype.build.call(this);
+        this.droparea = this.elem('droparea');
+    };
+    MVCDropzone.prototype.handle = function (files) {
+        var type = ['geojson', 'csv', 'shp'].find(function (ext) { return files.some(function (file) { return file.name.endsWith(ext); }); });
+        var mvc = new MVCGeofile(files);
+        document.body.appendChild(mvc.fragment);
+    };
+    MVCDropzone.prototype.do_drop = function (e) {
+        this.do_unhighlight(e);
+        var files = Array.from(e.dataTransfer.files);
+        this.handle(files);
+        e.preventDefault();
+        e.stopPropagation();
+    };
+    MVCDropzone.prototype.do_highlight = function (e) {
+        this.droparea.classList.add('highlight');
+        e.preventDefault();
+        e.stopPropagation();
+    };
+    MVCDropzone.prototype.do_unhighlight = function (e) {
+        this.droparea.classList.remove('highlight');
+        e.preventDefault();
+        e.stopPropagation();
+    };
+    MVCDropzone.prototype.do_files = function (e) {
+        var files = Array.from(e.target.files);
+        this.handle(files);
+        e.preventDefault();
+        e.stopPropagation();
+    };
+    return MVCDropzone;
+}(_mvc__WEBPACK_IMPORTED_MODULE_1__.MVC));
+var MVCGeofile = (function (_super) {
+    __extends(MVCGeofile, _super);
+    function MVCGeofile(files) {
+        var _this = _super.call(this, 'geoform') || this;
+        _this.model = {
+            type: null,
+            name: null,
+            size: null,
+            count: null,
+            rate: null,
+            loaded: false,
+            header: true,
+            lon: 'lon',
+            lat: 'lat',
+            separator: ';',
+            skip: 0,
             color: '#3399CC',
-            width: 1.25
-        })
-    })
-];
-function addToMap(geofile, map, minscale, maxscale, style) {
-    var last_extent = ol_extent__WEBPACK_IMPORTED_MODULE_6__.createEmpty();
-    var format = new ol_format__WEBPACK_IMPORTED_MODULE_7__.default();
-    style = style || defstyle;
-    var loader = function (extent, resolution, proj) {
-        if (ol_extent__WEBPACK_IMPORTED_MODULE_6__.equals(extent, last_extent))
-            return;
-        last_extent = extent;
-        var projname = proj.getCode();
-        var scale = geofile.getScale(resolution, projname);
-        extent = (proj === geofile.proj) ? extent : ol_proj__WEBPACK_IMPORTED_MODULE_1__.transformExtent(extent, proj, geofile.proj);
-        if ((!maxscale || (maxscale && scale < maxscale)) && (!minscale || (minscale && scale >= minscale))) {
-            geofile.bbox(extent, { targetProjection: projname })
-                .then(function (features) {
-                source.clear(true);
-                source.addFeatures(features.map(function (f) { return format.readFeature(f); }));
+            minscale: 0,
+            maxscale: 10000,
+        };
+        _this.onprogress = function (p) {
+            if (p.count === 0) {
+                _this.start = Date.now();
+            }
+            _this.model.count = p.count;
+            _this.model.loaded = false;
+            _this.model.rate = Math.floor((p.count * 1000) / (Date.now() - _this.start));
+            _this.progress.max = _this.model.size;
+            _this.progress.value = p.read;
+        };
+        _this.files = files;
+        _this.build();
+        var mainfile = files.find(function (file) { return ['geojson', 'shp', 'csv'].some(function (ext) { return file.name.endsWith("." + ext); }); });
+        _this.model.type = mainfile ? mainfile.name.replace(/^.*\./, '') : 'unknown';
+        _this.model.name = mainfile ? mainfile.name.replace(/\.[^\.]*$/, '') : '<none>';
+        _this.model.size = mainfile ? mainfile.size : 0;
+        _this.progress = _this.elem('progress');
+        _this.progress.value = 0;
+        _this.progress.max = _this.model.size;
+        return _this;
+    }
+    MVCGeofile.prototype.do_isdigit = function (event) {
+        if ('0123456789'.indexOf(event.key) < 0)
+            event.preventDefault();
+    };
+    MVCGeofile.prototype.do_switch = function (event) {
+        var elem = this.elem('panel');
+        elem.hidden = !elem.hidden;
+        event.preventDefault();
+        event.stopPropagation();
+    };
+    MVCGeofile.prototype.do_index = function (event) {
+        var _this = this;
+        this.setbuttons('index');
+        this.createGeofile();
+        if (this.geofile) {
+            this.start = Date.now();
+            this.geofile.buildIndexes([], this.onprogress).then(function () {
+                _this.model.count = _this.geofile.count;
+                _this.model.loaded = true;
+                blink(_this.elem('general'), 2000);
+                _this.setbuttons();
+            }).catch(function (e) {
+                _this.setbuttons();
+                alert("Load error for " + _this.geofile.name + " : " + e.stack);
             });
         }
-        else {
-            source.clear(true);
+        event.preventDefault();
+        event.stopPropagation();
+    };
+    MVCGeofile.prototype.do_show = function (event) {
+        var _this = this;
+        this.setbuttons('show');
+        var last_extent = ol_extent__WEBPACK_IMPORTED_MODULE_3__.createEmpty();
+        var format = new ol_format__WEBPACK_IMPORTED_MODULE_4__.default();
+        var style = this.defstyle(this.model.color);
+        var strategy = function (extent) {
+            if (source.loadedExtentsRtree_)
+                source.loadedExtentsRtree_.clear();
+            return [extent];
+        };
+        var loader = function (extent, resolution, proj) {
+            if (ol_extent__WEBPACK_IMPORTED_MODULE_3__.equals(extent, last_extent))
+                return;
+            last_extent = extent;
+            var projname = proj.getCode();
+            var scale = _this.geofile.getScale(resolution, projname);
+            extent = (proj === _this.geofile.proj) ? extent : ol_proj__WEBPACK_IMPORTED_MODULE_2__.transformExtent(extent, proj, _this.geofile.proj);
+            if ((!_this.model.maxscale || (_this.model.maxscale && scale < _this.model.maxscale))
+                && (!_this.model.minscale || (_this.model.minscale && scale >= _this.model.minscale))) {
+                _this.geofile.bbox(extent, { targetProjection: projname })
+                    .then(function (features) {
+                    source.clear(true);
+                    source.addFeatures(features.map(function (f) { return format.readFeature(f); }));
+                });
+            }
+            else {
+                source.clear(true);
+            }
+        };
+        var source = new ol_source__WEBPACK_IMPORTED_MODULE_5__.default({ useSpatialIndex: false, strategy: strategy, loader: loader });
+        var minResolution = this.geofile.getResolution(this.model.minscale, map.getView().getProjection().getCode());
+        var maxResolution = this.geofile.getResolution(this.model.maxscale, map.getView().getProjection().getCode());
+        var vlayer = new ol_layer__WEBPACK_IMPORTED_MODULE_6__.default({
+            renderMode: 'image', visible: true,
+            source: source, style: style, minResolution: minResolution, maxResolution: maxResolution
+        });
+        this.layer = vlayer;
+        map.addLayer(vlayer);
+        event.preventDefault();
+        event.stopPropagation();
+        this.setbuttons();
+    };
+    MVCGeofile.prototype.do_hide = function () {
+        this.setbuttons('hide');
+        if (this.layer) {
+            map.removeLayer(this.layer);
+            this.layer.dispose();
+            this.layer = null;
         }
+        this.setbuttons();
+        event.preventDefault();
+        event.stopPropagation();
     };
-    var strategy = function (extent) {
-        if (source.loadedExtentsRtree_)
-            source.loadedExtentsRtree_.clear();
-        return [extent];
+    MVCGeofile.prototype.do_drop = function (event) {
+        this.setbuttons('drop');
+        this.do_hide();
+        this.destroy();
+        this.setbuttons();
+        event.preventDefault();
+        event.stopPropagation();
     };
-    var minResolution = geofile.getResolution(minscale, map.getView().getProjection().getCode());
-    var maxResolution = geofile.getResolution(maxscale, map.getView().getProjection().getCode());
-    var source = new ol_source__WEBPACK_IMPORTED_MODULE_8__.default({ useSpatialIndex: false, strategy: strategy, loader: loader });
-    var vlayer = new ol_layer__WEBPACK_IMPORTED_MODULE_9__.default({
-        renderMode: 'image', visible: true,
-        source: source, style: style, minResolution: minResolution, maxResolution: maxResolution
-    });
-    map.addLayer(vlayer);
-}
-var map = new ol__WEBPACK_IMPORTED_MODULE_10__.default({
+    MVCGeofile.prototype.do_save = function (event) {
+        this.setbuttons('save');
+        var array = this.geofile.getIndexBuffer();
+        this.setbuttons();
+        event.preventDefault();
+        event.stopPropagation();
+    };
+    MVCGeofile.prototype.createGeofile = function () {
+        var geofile = null;
+        var files = this.files;
+        switch (this.model.type) {
+            case 'shp':
+                var shp = files.find(function (f) { return f.name.endsWith('.shp'); });
+                var dbf = files.find(function (f) { return f.name.endsWith('.dbf'); });
+                geofile = dbf ? new geolib_dist__WEBPACK_IMPORTED_MODULE_0__.Shapefile(shp.name, shp, dbf) : new geolib_dist__WEBPACK_IMPORTED_MODULE_0__.Shapefile(shp.name, shp);
+                break;
+            case 'geojson':
+                var gjs = files.find(function (f) { return f.name.endsWith('.geojson'); });
+                geofile = new geolib_dist__WEBPACK_IMPORTED_MODULE_0__.Geojson(gjs.name, gjs);
+                break;
+            case 'csv':
+                var csv = files.find(function (f) { return f.name.endsWith('.csv'); });
+                geofile = new geolib_dist__WEBPACK_IMPORTED_MODULE_0__.Csv(csv.name, csv, {
+                    header: this.model.header,
+                    lonlat: [this.model.lon, this.model.lat],
+                    separator: this.model.separator,
+                    skip: this.model.skip
+                });
+                break;
+        }
+        this.geofile = geofile;
+    };
+    MVCGeofile.prototype.defstyle = function (color) {
+        return [
+            new ol_style__WEBPACK_IMPORTED_MODULE_7__.default({
+                image: new ol_style__WEBPACK_IMPORTED_MODULE_8__.default({
+                    fill: new ol_style__WEBPACK_IMPORTED_MODULE_9__.default({
+                        color: 'rgba(255,255,255,0.4)'
+                    }),
+                    stroke: new ol_style__WEBPACK_IMPORTED_MODULE_10__.default({
+                        color: color,
+                        width: 1.25
+                    }),
+                    radius: 5
+                }),
+                fill: new ol_style__WEBPACK_IMPORTED_MODULE_9__.default({
+                    color: 'rgba(255,255,255,0.4)'
+                }),
+                stroke: new ol_style__WEBPACK_IMPORTED_MODULE_10__.default({
+                    color: color,
+                    width: 1.25
+                })
+            })
+        ];
+    };
+    MVCGeofile.prototype.setbuttons = function (processing) {
+        var _this = this;
+        var names = ['index', 'show', 'hide', 'save', 'drop'];
+        names.forEach(function (name) { return _this.elem(name).disabled = true; });
+        switch (true) {
+            case (!this.geofile):
+                names = ['index'];
+                break;
+            case (!this.layer):
+                names = ['show', 'save', 'drop'];
+                break;
+            default:
+                names = ['hide', 'save', 'drop'];
+                break;
+        }
+        names.forEach(function (name) { return _this.elem(name).disabled = false; });
+        if (processing)
+            this.elem(processing).disabled = true;
+    };
+    return MVCGeofile;
+}(_mvc__WEBPACK_IMPORTED_MODULE_1__.MVC));
+var dropzone = new MVCDropzone();
+document.body.appendChild(dropzone.fragment);
+var map = new ol__WEBPACK_IMPORTED_MODULE_11__.default({
     target: 'map',
     layers: [
-        new ol_layer__WEBPACK_IMPORTED_MODULE_11__.default({
-            source: new ol_source__WEBPACK_IMPORTED_MODULE_12__.default()
+        new ol_layer__WEBPACK_IMPORTED_MODULE_12__.default({
+            source: new ol_source__WEBPACK_IMPORTED_MODULE_13__.default()
         })
     ],
-    view: new ol__WEBPACK_IMPORTED_MODULE_13__.default({
-        center: ol_proj__WEBPACK_IMPORTED_MODULE_1__.fromLonLat([2.920823, 50.549929]),
+    view: new ol__WEBPACK_IMPORTED_MODULE_14__.default({
+        center: ol_proj__WEBPACK_IMPORTED_MODULE_2__.fromLonLat([2.920823, 50.549929]),
         zoom: 14
     })
 });
-var scale = new ol_control__WEBPACK_IMPORTED_MODULE_14__.default({
+var scale = new ol_control__WEBPACK_IMPORTED_MODULE_15__.default({
     units: 'metric',
     bar: true,
     steps: 4,
@@ -49271,6 +49414,139 @@ var scale = new ol_control__WEBPACK_IMPORTED_MODULE_14__.default({
     minWidth: 140,
 });
 map.addControl(scale);
+
+
+/***/ }),
+
+/***/ "./src/mvc.ts":
+/*!********************!*\
+  !*** ./src/mvc.ts ***!
+  \********************/
+/*! namespace exports */
+/*! export MVC [provided] [no usage info] [missing usage info prevents renaming] */
+/*! other exports [not provided] [no usage info] */
+/*! runtime requirements: __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "MVC": () => /* binding */ MVC
+/* harmony export */ });
+var __spreadArrays = (undefined && undefined.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
+var EVENTS = new Set(__spreadArrays(Object.getOwnPropertyNames(document).filter(function (k) { return k.startsWith("on"); }), Object.getOwnPropertyNames(Object.getPrototypeOf(Object.getPrototypeOf(document))).filter(function (k) { return k.startsWith("on"); }), Object.getOwnPropertyNames(Object.getPrototypeOf(window)).filter(function (k) { return k.startsWith("on"); })).filter(function (k) { return document[k] == null || typeof document[k] == "function"; }));
+var MVC = (function () {
+    function MVC(template) {
+        if (typeof template === 'string') {
+            var elem = this.byId(template);
+            if (elem instanceof HTMLTemplateElement)
+                this.template = elem;
+            else
+                throw Error("id: " + template + " not found as a template");
+        }
+        else {
+            this.template = template;
+        }
+        this.id = "mvid_" + MVC.NEXTID++;
+        this.fragment = document.importNode(this.template.content, true);
+        this.root = this.fragment.firstElementChild;
+        this.root.mvc = this;
+    }
+    MVC.prototype.destroy = function () {
+        this.root.mvc = null;
+        var parent = this.root.parentElement;
+        parent.removeChild(this.root);
+    };
+    MVC.prototype.build = function () {
+        var _this = this;
+        var methods = this.handlers();
+        var all = this.root.querySelectorAll('*');
+        for (var _i = 0, _a = Array.from(all); _i < _a.length; _i++) {
+            var el = _a[_i];
+            for (var _b = 0, _c = Array.from(el.attributes); _b < _c.length; _b++) {
+                var attr = _c[_b];
+                if (attr.name.startsWith('on') && methods.has(attr.nodeValue) && EVENTS.has(attr.name)) {
+                    var event_1 = attr.name.replace(/^on/, '');
+                    var method = methods.get(attr.nodeValue);
+                    el.addEventListener(event_1, method.bind(this));
+                    el.removeAttribute(attr.name);
+                }
+            }
+        }
+        var _loop_1 = function (prop) {
+            var _loop_2 = function (elem) {
+                if (elem instanceof HTMLInputElement) {
+                    elem.addEventListener('change', function (ev) { _this.model[prop] = ['checkbox', 'radio'].includes(elem.type) ? elem.checked : elem.value; });
+                    elem.addEventListener('keypress', function (ev) { _this.model[prop] = elem.value; });
+                }
+            };
+            for (var _i = 0, _a = Array.from(this_1.root.querySelectorAll("*[name=" + prop + "]")); _i < _a.length; _i++) {
+                var elem = _a[_i];
+                _loop_2(elem);
+            }
+            this_1.model[prop] = this_1.model[prop];
+        };
+        var this_1 = this;
+        for (var prop in this.model) {
+            _loop_1(prop);
+        }
+        var me = this;
+        this.model = new Proxy(this.model, {
+            set: function (obj, prop, val) {
+                obj[prop] = val;
+                if (me.root) {
+                    for (var _i = 0, _a = Array.from(me.root.querySelectorAll("*[name=" + prop + "]")); _i < _a.length; _i++) {
+                        var elem = _a[_i];
+                        if (elem instanceof HTMLInputElement && ['checkbox', 'radio'].includes(elem.type))
+                            elem.checked = val ? true : false;
+                        else if (elem instanceof HTMLInputElement)
+                            elem.value = val;
+                        else if (elem instanceof HTMLSpanElement)
+                            elem.innerHTML = val;
+                    }
+                }
+                return true;
+            }
+        });
+    };
+    MVC.prototype.byId = function (id) {
+        return document.getElementById(id);
+    };
+    MVC.prototype.elem = function (name) {
+        return this.root.querySelector("*[name=\"" + name + "\"]");
+    };
+    MVC.prototype.prevDef = function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+    MVC.prototype.handlers = function () {
+        var properties = new Set();
+        var obj = this;
+        var root = this;
+        do {
+            Object.getOwnPropertyNames(obj)
+                .filter(function (item) {
+                var desc = Object.getOwnPropertyDescriptor(obj, item);
+                return item.startsWith('do_') && desc && !desc.get && !desc.set;
+            })
+                .map(function (item) { return properties.add(item); });
+        } while ((obj = Object.getPrototypeOf(obj)));
+        var result = new Map();
+        Array.from(properties.keys()).forEach(function (item) {
+            return (typeof root[item] === 'function') && result.set(item, root[item]);
+        });
+        return result;
+    };
+    MVC.NEXTID = 0;
+    return MVC;
+}());
+
 
 
 /***/ }),
@@ -52282,8 +52558,12 @@ if (typeof Blob !== 'undefined' + '')
         const blob = this.slice(offset, offset + length);
         return new Promise((resolve, reject) => {
             const r = new FileReader();
-            r.onerror = () => reject(r.error);
-            r.onload = () => resolve(r.result);
+            r.onerror = () => {
+                return reject(r.error);
+            };
+            r.onload = () => {
+                return resolve(r.result);
+            };
             r.readAsArrayBuffer(blob);
         });
     };
