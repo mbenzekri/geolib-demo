@@ -57575,20 +57575,20 @@ DataView.prototype.getAscii = function (offset, length) {
 };
 Uint8Array.prototype.getUtf8 =
     ArrayBuffer.prototype.getUtf8 =
-        SharedArrayBuffer.prototype.getUtf8 =
-            function (offset, length) {
-                const buffer = this.slice(offset, offset + length);
-                if (window.TextDecoder) {
-                    const td = new TextDecoder();
-                    return td.decode(buffer).trimzero();
-                }
-                else {
-                    // eslint-disable-next-line @typescript-eslint/no-var-requires
-                    const StringDecoder = __webpack_require__(/*! string_decoder */ "?3642").StringDecoder;
-                    const sd = new StringDecoder();
-                    return sd.end(Buffer.from(buffer)).trimzero();
-                }
-            };
+        // SharedArrayBuffer.prototype.getUtf8 =
+        function (offset, length) {
+            const buffer = this.slice(offset, offset + length);
+            if (window.TextDecoder) {
+                const td = new TextDecoder();
+                return td.decode(buffer).trimzero();
+            }
+            else {
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
+                const StringDecoder = __webpack_require__(/*! string_decoder */ "?3642").StringDecoder;
+                const sd = new StringDecoder();
+                return sd.end(Buffer.from(buffer)).trimzero();
+            }
+        };
 DataView.prototype.getUtf8 = function (offset, length) {
     if (window.TextDecoder) {
         const td = new TextDecoder();
